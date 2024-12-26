@@ -7,14 +7,20 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { BoardsService } from './boards.service';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: [
+      'http://localhost:3001', // 프론트엔드 주소
+      'http://192.168.50.185:3001' // 추가적인 주소
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+})
 export class BoardsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
-  server: Server;
-
-  constructor(private readonly boardsService: BoardsService) {}
+  server!: Server;
 
   handleConnection(client: any) {
     console.log('클라이언트 연결됨:', client.id);
@@ -26,10 +32,6 @@ export class BoardsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('draw')
   async handleDraw(@MessageBody() data: any) {
-    // DB 저장 로직(필요 시):
-    // await this.boardsService.addElement(boardId, data);
-
-    // 받은 데이터 전체 클라이언트에게 방송
     this.server.emit('drawBroadcast', data);
   }
 } 

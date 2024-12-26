@@ -4,10 +4,10 @@ import { Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class Board extends Document {
   @Prop()
-  name: string;
+  name!: string;
 
   @Prop({ type: Array })
-  elements: any[];
+  elements!: any[];
 }
 
-export const BoardSchema = SchemaFactory.createForClass(Board); 
+export const BoardSchema = SchemaFactory.createForClass(Board);

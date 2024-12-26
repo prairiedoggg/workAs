@@ -7,10 +7,19 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: [
+      'http://localhost:3001', // 프론트엔드 주소
+      'http://192.168.50.185:3001' // 추가적인 주소
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+})
 export class AudioGateway {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   // 누군가가 offer(전화 시도) 보냈을 때
   @SubscribeMessage('callUser')
