@@ -26,6 +26,7 @@
     "@nestjs/testing": "^10.4.15",
     "@types/jest": "^29.5.14",
     "@types/node": "^18.0.0",
+    "@types/socket.io-client": "^1.4.36",
     "cross-env": "^7.0.3",
     "ts-node": "^10.0.0",
     "typescript": "^5.7.2"
