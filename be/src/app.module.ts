@@ -4,10 +4,17 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AudioGateway } from './gateways/audio.gateway';
 import { BoardsModule } from './boards/boards.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://tmdqja:ytD8z0y72v3Tmlki@cluster0.glzlc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
+    ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV === 'production' ? '.env' : '.env.dev',
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(
+      `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.glzlc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+    ),
     BoardsModule,
   ],
   controllers: [AppController],
